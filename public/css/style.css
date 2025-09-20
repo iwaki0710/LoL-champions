@@ -1,0 +1,53 @@
+/* 例: サイト全体の基本的なスタイル */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #fff;
+    padding: 20px;
+    background: #000;
+}
+/* フィルタリングフォームのスタイル */
+#filter-form select {
+    margin-right: 15px;
+    padding: 5px;
+    border-radius: 5px;
+    border:1px  solid #ddd ;
+}
+
+.champion-difficulty .star {
+    color: gold;
+}
+/* ----------------- */
+.lol{
+    font-size: 30px;
+}
+.explanation-box{
+    display: grid; 
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin: 10px 0;
+}
+.explanation,.character-introduction{
+    border: 1px solid #fff;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.explanation-h2{
+    font-size: 26px;
+    margin: 10px 0 5px;
+}
+/* ----------------- */
+.champion-card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+}
+
+.champion-list {
+    display: grid; 
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+}
+/* ----------------- */
