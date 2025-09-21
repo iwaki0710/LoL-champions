@@ -4,19 +4,107 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use App\Models\Champion; // Championモデルをインポート
+use App\Models\Champion;
 
 class ChampionController extends Controller
 {
     /**
-     * すべてのチャンピオン情報をデータベースから取得し、フィルタリングして表示する
+     * すべてのチャンピオン情報を表示する（トップページ）
      */
     public function index(Request $request)
     {
-        // データベースからすべてのチャンピオン情報を取得
         $query = Champion::query();
+        $filteredChampions = $this->applyFilters($query, $request)->get();
+        $viewModel = $this->getViewModel($filteredChampions, $request);
+        return view('champions.index', $viewModel);
+    }
 
-        // 難易度によるフィルタリング
+    /**
+     * Topレーンのチャンピオン一覧を表示する
+     */
+    public function top(Request $request)
+    {
+        $query = Champion::where('lane', 'Top');
+        $filteredChampions = $this->applyFilters($query, $request)->get();
+        $viewModel = $this->getViewModel($filteredChampions, $request, 'Top');
+        return view('champions.lane', $viewModel);
+    }
+
+    /**
+     * Jungleレーンのチャンピオン一覧を表示する
+     */
+    public function jungle(Request $request)
+    {
+        $query = Champion::where('lane', 'Jungle');
+        $filteredChampions = $this->applyFilters($query, $request)->get();
+        $viewModel = $this->getViewModel($filteredChampions, $request, 'Jungle');
+        return view('champions.lane', $viewModel);
+    }
+
+    /**
+     * Middleレーンのチャンピオン一覧を表示する
+     */
+    public function middle(Request $request)
+    {
+        $query = Champion::where('lane', 'Middle');
+        $filteredChampions = $this->applyFilters($query, $request)->get();
+        $viewModel = $this->getViewModel($filteredChampions, $request, 'Middle');
+        return view('champions.lane', $viewModel);
+    }
+
+    /**
+     * Bottomレーンのチャンピオン一覧を表示する
+     */
+    public function bottom(Request $request)
+    {
+        $query = Champion::where('lane', 'Bottom');
+        $filteredChampions = $this->applyFilters($query, $request)->get();
+        $viewModel = $this->getViewModel($filteredChampions, $request, 'Bottom');
+        return view('champions.lane', $viewModel);
+    }
+
+    /**
+     * Supportレーンのチャンピオン一覧を表示する
+     */
+    public function support(Request $request)
+    {
+        $query = Champion::where('lane', 'Support');
+        $filteredChampions = $this->applyFilters($query, $request)->get();
+        $viewModel = $this->getViewModel($filteredChampions, $request, 'Support');
+        return view('champions.lane', $viewModel);
+    }
+
+    /**
+     * チャンピオン詳細情報を表示する
+     */
+    public function show($championName)
+    {
+        $champion = Champion::where('id', $championName)->firstOrFail();
+        $versionsResponse = Http::get("https://ddragon.leagueoflegends.com/api/versions.json");
+        $versions = $versionsResponse->json();
+        $version = $versions[0];
+        $locale = 'ja_JP';
+        $url = "https://ddragon.leagueoflegends.com/cdn/{$version}/data/{$locale}/champion/{$championName}.json";
+        $response = Http::get($url);
+
+        if ($response->successful()) {
+            $championApiData = $response->json()['data'][$championName];
+            $champion->info_api = $championApiData['info'];
+            $champion->passive = $championApiData['passive'];
+            $champion->spells = $championApiData['spells'];
+            $champion->image = $championApiData['image'];
+
+            return view('champions.show', compact('champion', 'version'));
+        } else {
+            return back()->with('error', 'APIからチャンピオン詳細情報を取得できませんでした。');
+        }
+    }
+
+    /**
+     * 難易度とロールのフィルタリングを適用するプライベートメソッド
+     */
+    private function applyFilters($query, Request $request)
+    {
         $difficultyFilter = $request->query('difficulty');
         if ($difficultyFilter) {
             if ($difficultyFilter === 'star1') {
@@ -28,59 +116,26 @@ class ChampionController extends Controller
             }
         }
         
-        // ロールによるフィルタリング
         $roleFilter = $request->query('role');
         if ($roleFilter) {
             $query->whereJsonContains('tags', $roleFilter);
         }
         
-        // レーンによるフィルタリング
-        $laneFilter = $request->query('lane');
-        if ($laneFilter) {
-            $query->where('lane', $laneFilter);
-        }
-
-        // フィルタリングされたデータを取得
-        $filteredChampions = $query->get();
-        
-        // 最新のAPIバージョンを取得してビューに渡す
-        $versionsResponse = Http::get("https://ddragon.leagueoflegends.com/api/versions.json");
-        $versions = $versionsResponse->json();
-        $version = $versions[0];
-
-        // ビューに渡す
-        return view('champions.index', compact('filteredChampions', 'roleFilter', 'difficultyFilter', 'laneFilter', 'version'));
+        return $query;
     }
 
     /**
-     * 特定のチャンピオンの詳細情報を取得して表示する
+     * ビューに渡す共通データを取得するプライベートメソッド
      */
-    public function show($championName)
+    private function getViewModel($filteredChampions, Request $request, $laneFilter = null)
     {
-        // 1. データベースからチャンピオンの基本情報を取得
-        $champion = Champion::where('id', $championName)->firstOrFail();
-
-        // 2. 最新のAPIバージョンを取得
         $versionsResponse = Http::get("https://ddragon.leagueoflegends.com/api/versions.json");
         $versions = $versionsResponse->json();
         $version = $versions[0];
-        $locale = 'ja_JP';
-        $url = "https://ddragon.leagueoflegends.com/cdn/{$version}/data/{$locale}/champion/{$championName}.json";
-        $response = Http::get($url);
 
-        if ($response->successful()) {
-            $championApiData = $response->json()['data'][$championName];
-            
-            // データベースの$championオブジェクトにAPIの情報を追加
-            $champion->info_api = $championApiData['info'];
-            $champion->passive = $championApiData['passive'];
-            $champion->spells = $championApiData['spells'];
-            $champion->image = $championApiData['image'];
+        $roleFilter = $request->query('role');
+        $difficultyFilter = $request->query('difficulty');
 
-            return view('champions.show', compact('champion', 'version'));
-        } else {
-            // API取得に失敗した場合
-            return view('champions.show', compact('champion', 'version'));
-        }
+        return compact('filteredChampions', 'roleFilter', 'difficultyFilter', 'laneFilter', 'version');
     }
 }

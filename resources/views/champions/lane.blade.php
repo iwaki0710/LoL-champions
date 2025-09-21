@@ -2,47 +2,46 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>LoL チャンピオン一覧</title>
+    <title>LoL {{ $laneFilter ?? '全' }}レーン チャンピオン一覧</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/destyle.css@3.0.2/destyle.css">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 <body>
-    <h1 class="lol">LoLを知ろう</h1>
+    <h1 class="lol">{{ $laneFilter ?? '' }}レーン チャンピオン一覧</h1>
+
     <div class="explanation-box">
         <div class="explanation">
-            <h2 class="explanation-h2">LoLの基本的なルール</h2>
-            <p>LoLは、5人のプレイヤーからなる2つのチームに分かれて対戦するゲームです。<br>マップには3本の道（レーン）があり、この道を仲間と一緒に進み、<br>敵チームの陣地にあるネクサスの破壊を目指します。</p>
-            <h2 class="explanation-h2">ゲームの流れ</h2>
-            <p>敵チームのプレイヤーや、自動で動くミニオンを倒してお金を稼ぎ、アイテムを購入してチャンピオンを強化します。敵のタワーを壊しながら進み、最終的にネクサスを破壊できたら勝利となります。</p>
-        </div>
-        <div class="character-introduction">
-            <h2 class="explanation-h2">魅力的なチャンピオン</h2>
-            <p>LoLにはたくさんの魅力的なチャンピオンがいます。あなたは対戦ごとに好きなチャンピオンを1人選び、操作します。</p>
-            <p>チャンピオンにはそれぞれ、得意なことや役割が異なります。</p>
-            <ul>
-                <li>敵を攻撃するのが得意なチャンピオン</li>
-                <li>仲間を助けたり、敵の動きを止めたりするのが得意なチャンピオン</li>
-            </ul>
-            <p>まずはあなたの好みに合ったチャンピオンを見つけてみましょう！</p>
+            @php
+                $laneDescriptions = [
+                    'Top' => 'トップレーンはマップの最上部に位置し、基本的にタイマンで戦います。タンクやファイターといった耐久力の高いチャンピオンが主に担当し、チームの最前線で敵の攻撃を受け止めます。',
+                    'Jungle' => 'ジャングルはレーンの間に広がる森で、ミニオンではなく中立モンスターを狩ります。各レーンに奇襲を仕掛ける（ガンク）ことで、味方を助け、有利な状況を作り出す重要な役割を担います。',
+                    'Middle' => 'ミッドレーンはマップの中央に位置し、通常はメイジやアサシンといった攻撃力の高いチャンピオンが担当します。マップ全体に素早く移動できるため、他のレーンを支援する能力が求められます。',
+                    'Bottom' => 'ボットレーンはマップの最下部に位置し、通常はADC（マークスマン）とサポートの2人組で戦います。ADCは遠距離からの継続火力が得意で、サポートはADCを援護します。',
+                    'Support' => 'サポートはボットレーンでADCを助ける役割です。敵の妨害や味方の回復、視界の確保など、直接的な戦闘以外の面でチームを支えます。'
+                ];
+                $description = $laneDescriptions[$laneFilter] ?? 'LoLのゲーム性を理解しましょう。';
+            @endphp
+            <h2 class="explanation-h2">{{ $laneFilter ?? '' }}レーンの特徴</h2>
+            <p>{!! nl2br(e($description)) !!}</p>
         </div>
     </div>
     
     <hr>
     {{-- フィルタリングUI --}}
     <div class="filtering-container">
-    <div class="filter-group">
-            <label for="lane">レーンで選別:</label>
-            <select name="lane" id="lane" onchange="redirectLanePage(this.value)">
-                <option value="">すべて</option>
-                @php
-                    $lanes = ['Top', 'Jungle', 'Middle', 'Bottom', 'Support'];
-                @endphp
-                @foreach ($lanes as $lane)
-                    <option value="{{ strtolower($lane) }}" {{ ($laneFilter === $lane) ? 'selected' : '' }}>{{ $lane }}</option>
-                @endforeach
-            </select>
-        </div>
-        <form action="{{ route('champions.index') }}" method="GET" class="filter-form">
+        <div class="filter-group">
+                <label for="lane">レーンで選別:</label>
+                <select name="lane" id="lane" onchange="redirectLanePage(this.value)">
+                    <option value="">すべて</option>
+                    @php
+                        $lanes = ['Top', 'Jungle', 'Middle', 'Bottom', 'Support'];
+                    @endphp
+                    @foreach ($lanes as $lane)
+                        <option value="{{ strtolower($lane) }}" {{ ($laneFilter === $lane) ? 'selected' : '' }}>{{ $lane }}</option>
+                    @endforeach
+                </select>
+            </div>
+        <form action="{{ route('champions.' . strtolower($laneFilter)) }}" method="GET" class="filter-form">
             <div class="filter-group">
                 <label for="difficulty">難易度で選別:</label>
                 <select name="difficulty" id="difficulty" onchange="this.form.submit()">
@@ -67,7 +66,7 @@
         </form>
     </div>
     <hr>
-
+    {{-- チャンピオンリストの部分は index.blade.php と共通化できます --}}
     @if (count($filteredChampions) > 0)
     <div class="champion-list">
         @foreach ($filteredChampions as $champion)
