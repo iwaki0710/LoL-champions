@@ -27,7 +27,7 @@ class ChampionSeeder extends Seeder
             return;
         }
 
-        $version = $versions[0]; // 最新版を取得
+        $version = $versions[0]; 
 
         $url = "https://ddragon.leagueoflegends.com/cdn/{$version}/data/{$locale}/champion.json";
         $response = Http::get($url);
@@ -48,7 +48,6 @@ class ChampionSeeder extends Seeder
                     'updated_at' => now(),
                 ];
             }
-            // データベースに一括挿入
             DB::table('champions')->insert($championsToInsert);
         } else {
             $this->command->error("チャンピオンデータを取得できませんでした。URL: {$url}");

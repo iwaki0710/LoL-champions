@@ -26,86 +26,14 @@
             <p>まずはあなたの好みに合ったチャンピオンを見つけてみましょう！</p>
         </div>
     </div>
-    
     <hr>
-    {{-- フィルタリングUI --}}
-    <div class="filtering-container">
-    <div class="filter-group">
-            <label for="lane">レーンで選別:</label>
-            <select name="lane" id="lane" onchange="redirectLanePage(this.value)">
-                <option value="">すべて</option>
-                @php
-                    $lanes = ['Top', 'Jungle', 'Middle', 'Bottom', 'Support'];
-                @endphp
-                @foreach ($lanes as $lane)
-                    <option value="{{ strtolower($lane) }}" {{ ($laneFilter === $lane) ? 'selected' : '' }}>{{ $lane }}</option>
-                @endforeach
-            </select>
-        </div>
-        <form action="{{ route('champions.index') }}" method="GET" class="filter-form">
-            <div class="filter-group">
-                <label for="difficulty">難易度で選別:</label>
-                <select name="difficulty" id="difficulty" onchange="this.form.submit()">
-                    <option value="">すべて</option>
-                    <option value="star1" {{ $difficultyFilter === 'star1' ? 'selected' : '' }}>★</option>
-                    <option value="star2" {{ $difficultyFilter === 'star2' ? 'selected' : '' }}>★★</option>
-                    <option value="star3" {{ $difficultyFilter === 'star3' ? 'selected' : '' }}>★★★</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label for="role">ロールで選別:</label>
-                <select name="role" id="role" onchange="this.form.submit()">
-                    <option value="">すべて</option>
-                    @php
-                        $roles = ['Fighter', 'Tank', 'Mage', 'Assassin', 'Marksman', 'Support'];
-                    @endphp
-                    @foreach ($roles as $role)
-                        <option value="{{ $role }}" {{ $roleFilter === $role ? 'selected' : '' }}>{{ $role }}</option>
-                    @endforeach
-                </select>
-            </div>
-        </form>
-    </div>
-    <hr>
+<x-lane-icons />
 
-    @if (count($filteredChampions) > 0)
-    <div class="champion-list">
-        @foreach ($filteredChampions as $champion)
-            <a href="{{ url('/champions/' . $champion->id) }}" class="champion-link">
-                <div class="champion-card">
-                    <h2>{{ $champion->name }}</h2>
-                    <p class="champion-difficulty">難易度: 
-                        @php
-                            $difficulty = $champion->difficulty;
-                            if ($difficulty >= 0 && $difficulty <= 3) {
-                                $stars = 1;
-                            } elseif ($difficulty >= 4 && $difficulty <= 7) {
-                                $stars = 2;
-                            } else {
-                                $stars = 3;
-                            }
-                        @endphp
-                        @for ($i = 0; $i < $stars; $i++)
-                            <span class="star">★</span>
-                        @endfor
-                    </p>
-                    <p>ロール: {{ implode(', ', $champion->tags) }}</p>
-                    <img src="https://ddragon.leagueoflegends.com/cdn/{{ $version }}/img/champion/{{ $champion->id }}.png" alt="{{ $champion->name }}の画像" width="100">
-                </div>
-            </a>
-        @endforeach
-        </div>
-    @else
-        <p>チャンピオン情報がありません。</p>
-    @endif
-    <script>
-    function redirectLanePage(lane) {
-        if (lane) {
-            window.location.href = `/champions/${lane}`;
-        } else {
-            window.location.href = `/champions`;
-        }
-    }
-    </script>
+<x-filter-form :difficultyFilter="$difficultyFilter" :roleFilter="$roleFilter" />
+
+<hr>
+
+<x-champions-list :filteredChampions="$filteredChampions" :version="$version" />
+
 </body>
 </html>

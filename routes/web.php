@@ -3,7 +3,22 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChampionController;
 
-// チャンピオン一覧ページへのルート
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
+|
+*/
+
+Route::get('/', function () {
+    return redirect()->route('champions.index');
+});
+
+// チャンピオン一覧（全キャラクター）
 Route::get('/champions', [ChampionController::class, 'index'])->name('champions.index');
 
 // 各レーンごとのチャンピオン一覧
@@ -13,5 +28,5 @@ Route::get('/champions/middle', [ChampionController::class, 'middle'])->name('ch
 Route::get('/champions/bottom', [ChampionController::class, 'bottom'])->name('champions.bottom');
 Route::get('/champions/support', [ChampionController::class, 'support'])->name('champions.support');
 
-//チャンピオン詳細ページへのルート
-Route::get('/champions/{champion}',[ChampionController::class, 'show'])->name('champions.show');
+// チャンピオン詳細ページ
+Route::get('/champions/{champion}', [ChampionController::class, 'show'])->name('champions.show');

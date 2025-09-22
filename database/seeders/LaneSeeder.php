@@ -8,9 +8,6 @@ use App\Models\Champion;
 
 class LaneSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         $championLanes = [
@@ -25,6 +22,7 @@ class LaneSeeder extends Seeder
             'Aphelios' => 'Bottom',
             'Ashe' => 'Bottom',
             'AurelionSol' => 'Middle',
+            'aurora' => 'Middle',
             'Azir' => 'Middle',
             'Bard' => 'Support',
             'Belveth' => 'Jungle',
@@ -93,6 +91,7 @@ class LaneSeeder extends Seeder
             'Malzahar' => 'Middle',
             'Maokai' => 'Jungle',
             'MasterYi' => 'Jungle',
+            'Mel' => 'Middle',
             'Milio' => 'Support',
             'MissFortune' => 'Bottom',
             'Mordekaiser' => 'Top',
@@ -179,7 +178,7 @@ class LaneSeeder extends Seeder
             'Ziggs' => 'Bottom',
             'Zilean' => 'Support',
             'Zoe' => 'Middle',
-            'Zyra' => 'Support'
+            'Zyra' => 'Support',
         ];
 
         foreach ($championLanes as $championId => $lane) {
