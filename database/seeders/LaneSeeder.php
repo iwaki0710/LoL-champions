@@ -17,6 +17,7 @@ class LaneSeeder extends Seeder
             'Akshan' => 'Middle',
             'Alistar' => 'Support',
             'Amumu' => 'Jungle',
+            'Ambessa' => 'Top',
             'Anivia' => 'Middle',
             'Annie' => 'Middle',
             'Aphelios' => 'Bottom',
