@@ -11,21 +11,11 @@
 
     <div class="explanation-box">
         <div class="explanation">
-            @php
-                $laneDescriptions = [
-                    'Top' => 'トップレーンはマップの最上部に位置し、基本的にタイマンで戦います。タンクやファイターといった耐久力の高いチャンピオンが主に担当し、チームの最前線で敵の攻撃を受け止めます。',
-                    'Jungle' => 'ジャングルはレーンの間に広がる森で、ミニオンではなく中立モンスターを狩ります。各レーンに奇襲を仕掛ける（ガンク）ことで、味方を助け、有利な状況を作り出す重要な役割を担います。',
-                    'Middle' => 'ミッドレーンはマップの中央に位置し、通常はメイジやアサシンといった攻撃力の高いチャンピオンが担当します。マップ全体に素早く移動できるため、他のレーンを支援する能力が求められます。',
-                    'Bottom' => 'ボットレーンはマップの最下部に位置し、通常はADC（マークスマン）とサポートの2人組で戦います。ADCは遠距離からの継続火力が得意で、サポートはADCを援護します。',
-                    'Support' => 'サポートはボットレーンでADCを助ける役割です。敵の妨害や味方の回復、視界の確保など、直接的な戦闘以外の面でチームを支えます。'
-                ];
-                $description = $laneDescriptions[$laneFilter] ?? 'LoLのゲーム性を理解しましょう。';
-            @endphp
             <h2 class="explanation-h2">{{ $laneFilter ?? '' }}レーンの特徴</h2>
-            <p>{!! nl2br(e($description)) !!}</p>
+            {{-- ここで対応するBladeファイルを読み込む --}}
+            @include('explanations.' . (strtolower($laneFilter) ?? 'default'))
         </div>
     </div>
-    
 <hr>
 
 <x-lane-icons />
