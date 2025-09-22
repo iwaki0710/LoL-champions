@@ -171,6 +171,7 @@ class LaneSeeder extends Seeder
             'Yasuo' => 'Middle',
             'Yone' => 'Middle',
             'Yorick' => 'Top',
+            'Yunara' => 'Bottom',
             'Yuumi' => 'Support',
             'Zac' => 'Jungle',
             'Zed' => 'Middle',
