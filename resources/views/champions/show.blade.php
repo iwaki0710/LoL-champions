@@ -3,11 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ $champion->name }}の詳細</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/destyle.css@3.0.2/destyle.css">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">  
 </head>
 <body>
-<h1>{{ $champion->name }} - {{ $champion->title }}</h1>
-    <p>{{ $champion->blurb }}</p>
-
+    <div class="detail-champ">
+        <div class="champ-title">
+            <h1>{{ $champion->name }} - {{ $champion->title }}</h1>
+            <p>{{ $champion->blurb }}</p>
+        </div>
+        {{-- スプラッシュアートとスキンの表示 --}}
+        @if (isset($championApiData['skins']))
+            <div class="splash-container">
+                {{-- デフォルトのスプラッシュアート (num: 0) --}}
+                <img src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/{{ $champion->id }}_0.jpg" alt="{{ $champion->name }} スプラッシュアート" style="width: 100%; height: auto;">
+            </div>
+        @endif
+    </div>
+    
     {{-- 難易度（データベースから取得） --}}
     <p>難易度: 
         @php
@@ -39,12 +52,18 @@
         <h2>スキル</h2>
         @foreach ($champion->spells as $spell)
             <h3>{{ $spell['name'] }}</h3>
-            <img src="https://ddragon.leagueoflegends.com/cdn/{{ $version }}/img/spell/{{ $spell['image']['full'] }}" alt="{{ $spell['name'] }}アイコン" width="50">
+            <img src="https://ddragon.leagueoflegends.com/cdn/{{ $version }}/img/spell/{{ $spell['image']['full'] }}" alt="スキルアイコン" width="50">
             <p>{!! $spell['description'] !!}</p>
-            <p>クールダウン: {{ implode(', ', $spell['cooldown']) }}秒</p>
-            <hr>
         @endforeach
+        <hr>
     @endif
 
+    <h3>スキン一覧</h3>
+        <div class="skin-thumbnails">
+            @foreach ($championApiData['skins'] as $skin)
+                {{-- スキンのサムネイル画像 --}}
+                <img src="https://ddragon.leagueoflegends.com/cdn/img/champion/splash/{{ $champion->id }}_{{ $skin['num'] }}.jpg" alt="{{ $skin['name'] }}" style="width: 100px; cursor: pointer; border: 2px solid transparent;">
+            @endforeach
+        </div>
 </body>
 </html>

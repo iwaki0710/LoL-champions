@@ -94,3 +94,25 @@ body {
 .lane-icon-link.active .lane-icon {
     border-color: #fff; 
 }
+/* -------showメソッド------------ */
+.detail-champ{
+    display: flex;
+    gap: 20px;
+}
+.champ-title{
+    flex-grow: 1;
+}
+.champ-title h1{
+    font-size: 38px;
+}
+.splash-container {
+    flex-grow: 1; 
+    margin: 20px 0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.splash-container img {
+    display: block; 
+    width: 100%;
+    height: auto;
+}

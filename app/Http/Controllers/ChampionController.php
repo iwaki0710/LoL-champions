@@ -74,12 +74,13 @@ class ChampionController extends Controller
         return view('champions.lane', $viewModel);
     }
 
-    /**
-     * チャンピオン詳細情報を表示する
-     */
+
     public function show($championName)
     {
+        // 1. データベースからチャンピオンの基本情報を取得
         $champion = Champion::where('id', $championName)->firstOrFail();
+
+        // 2. 最新のAPIバージョンを取得
         $versionsResponse = Http::get("https://ddragon.leagueoflegends.com/api/versions.json");
         $versions = $versionsResponse->json();
         $version = $versions[0];
@@ -89,14 +90,21 @@ class ChampionController extends Controller
 
         if ($response->successful()) {
             $championApiData = $response->json()['data'][$championName];
+            
+            // データベースの$championオブジェクトにAPIの情報を追加
             $champion->info_api = $championApiData['info'];
             $champion->passive = $championApiData['passive'];
             $champion->spells = $championApiData['spells'];
             $champion->image = $championApiData['image'];
 
-            return view('champions.show', compact('champion', 'version'));
+            // ここにAPIから取得したスキン情報を追加
+            $champion->skins = $championApiData['skins'];
+
+            // ビューに$championApiDataを渡す
+            return view('champions.show', compact('champion', 'version', 'championApiData'));
         } else {
-            return back()->with('error', 'APIからチャンピオン詳細情報を取得できませんでした。');
+            // エラー処理
+            abort(404, 'Champion data not found from API.');
         }
     }
 
