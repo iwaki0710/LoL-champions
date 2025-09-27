@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('champions', function (Blueprint $table) {
-            $table->string('lane')->nullable()->after('tags'); 
+        Schema::table('items', function (Blueprint $table) {
+            // boolean型（true/false）の'purchasable'カラムを追加
+            $table->boolean('purchasable')->default(true)->after('builds_into');
         });
     }
 
@@ -21,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('champions', function (Blueprint $table) {
+        Schema::table('items', function (Blueprint $table) {
             //
         });
     }

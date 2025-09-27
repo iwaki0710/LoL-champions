@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 <body>
+    <x-header />
     <h1 class="lol">{{ $laneFilter ?? '' }}レーン チャンピオン一覧</h1>
 
     <div class="explanation-box">

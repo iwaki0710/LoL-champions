@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('champions', function (Blueprint $table) {
-            $table->string('lane')->nullable()->after('tags'); 
+        Schema::table('items', function (Blueprint $table) {
+            // 素材アイテムのIDをJSON形式で保存するカラムを追加
+            $table->json('builds_from')->nullable()->after('purchasable');
         });
     }
 
@@ -21,8 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('champions', function (Blueprint $table) {
-            //
+        Schema::table('items', function (Blueprint $table) {
+            $table->dropColumn('builds_from');
         });
     }
 };

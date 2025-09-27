@@ -1,4 +1,28 @@
-/* 例: サイト全体の基本的なスタイル */
+/*
+| ===================================================================
+| LOL Champion/Item Site Stylesheet (Reorganized)
+| ===================================================================
+|
+| 元のスタイルを変更せず、セクション分けとコメントで整理しました。
+|
+| 目次 (Table of Contents):
+|
+| 1. Global / Common         (サイト全体の基本スタイル)
+| 2. Header                  (ヘッダー)
+| 3. Top Page                (トップページ)
+| 4. Champion Pages          (チャンピオン関連)
+| 5. Account Pages           (アカウント関連)
+| 6. Item Pages              (アイテム関連)
+| 7. Reusable Components     (再利用コンポーネント)
+| 8. Modal Window            (モーダルウィンドウ)
+|
+*/
+
+/*
+| -------------------------------------------------------------------
+| 1. Global / Common (サイト全体の基本スタイル)
+| -------------------------------------------------------------------
+*/
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
@@ -6,49 +30,89 @@ body {
     padding: 20px;
     background: #000;
 }
-/* フィルタリングフォームのスタイル */
-.filter-form{
-    display: flex;
-}
-#filter-form select {
-    margin-right: 15px;
-    padding: 5px;
-    border-radius: 5px;
-    border:1px  solid #ddd ;
+
+
+/*
+| -------------------------------------------------------------------
+| 2. Header (ヘッダー)
+| -------------------------------------------------------------------
+*/
+header {
+    background-color: #222;
+    padding: 15px 20px;
+    border-bottom: 2px solid gold;
+    margin-bottom: 20px;
 }
 
-.champion-difficulty .star {
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+}
+
+nav li {
+    margin: 0 20px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 1.2em;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+nav a:hover {
     color: gold;
 }
 
-/* ----------------- */
-.lol{
+
+/*
+| -------------------------------------------------------------------
+| 3. Top Page (トップページ)
+| -------------------------------------------------------------------
+*/
+.lol {
     font-size: 30px;
 }
-.explanation-box{
+
+.explanation-box {
     display: grid; 
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
     margin: 10px 0;
     height: 280px;
 }
-.explanation,.character-introduction{
+
+.explanation,
+.character-introduction {
     border: 1px solid #fff;
     padding: 10px;
     border-radius: 10px;
     height: 280px;
 }
 
-.explanation-h2{
+.explanation-h2 {
     font-size: 26px;
     margin: 10px 0 5px;
 }
 
-.laneIcon {
-    text-align: center; /* 内部の要素を水平方向の中央に配置 */
-    margin: 20px 0;    /* 上下に余白を追加 */
+
+/*
+| -------------------------------------------------------------------
+| 4. Champion Pages (チャンピオン関連)
+| -------------------------------------------------------------------
+*/
+
+/* Champion List Page */
+.champion-list {
+    display: grid; 
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
 }
-/* ----------------- */
+
 .champion-card {
     border: 1px solid #ddd;
     padding: 15px;
@@ -56,64 +120,34 @@ body {
     border-radius: 8px;
 }
 
-.champion-list {
-    display: grid; 
-    grid-template-columns: repeat(5, 1fr);
-    gap: 20px;
-}
-/* --------レーンアイコン--------- */
-
-.lane-icons {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin: 20px 0;
+.champion-difficulty .star {
+    color: gold;
 }
 
-/* 各アイコンのリンク */
-.lane-icon-link {
-    display: block;
-    text-align: center;
-    text-decoration: none;
-    transition: transform 0.3s ease;
-}
-
-/* アイコンの画像そのもの */
-.lane-icon {
-    width: 60px; /* サイズを大きくする */
-    height: auto;
-    border-radius: 5%; /* 角を少し丸くした四角にする */
-    border: 3px solid transparent; /* 枠の太さを太くする */
-    transition: transform 0.3s ease, border-color 0.3s ease;
-}
-
-.lane-icon-link:hover .lane-icon {
-    transform: scale(1.2);
-}
-
-.lane-icon-link.active .lane-icon {
-    border-color: #fff; 
-}
-/* -------showメソッド------------ */
-.detail-champ{
+/* Champion Detail Page (show) */
+.detail-champ {
     display: flex;
     gap: 20px;
 }
-.detail-champ h1{
+
+.detail-champ h1 {
     font-size: 38px;
 }
-.detail-champ p{
+
+.detail-champ p {
     line-height: 40px;
 }
-.champ-title{
+
+.champ-title {
     flex-basis: 50%;
 }
+
 .splash-container {
     flex-basis: 50%;
     border-radius: 8px;
     overflow: hidden;
 }
-/* --スキル-- */
+
 .skills-container {
     display: flex;
     flex-wrap: wrap; 
@@ -126,11 +160,11 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* text-align: center; */
     padding: 15px;
     border-radius: 8px;
 }
-.skill-item img{
+
+.skill-item img {
     width: 80px;
     height: 80px;
 }
@@ -159,14 +193,432 @@ body {
     text-align: left;
     width: 100%;
 }
-/* --スキン一覧-- */
-.skin-thumbnails img{
+
+.skin-thumbnails img {
     width: 200px;
     height: auto;
     cursor: pointer;
     border: 2px solid transparent;
 }
-/* --モーダルウィンドウ-- */
+
+
+/*
+| -------------------------------------------------------------------
+| 5. Account Pages (アカウント関連)
+| -------------------------------------------------------------------
+*/
+.search-container {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.search-container input[type="text"] {
+    padding: 10px;
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.search-container button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.search-container button:hover {
+    background-color: #0056b3;
+}
+
+.error {
+    color: red;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.summoner-details {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+/* ▼▼▼ 対戦履歴用のスタイルを追記 ▼▼▼ */
+.match-history-container {
+    max-width: 800px;
+    margin: 20px auto;
+}
+
+.match-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background-color: #111;
+    border-left: 5px solid; /* 勝利/敗北で色が変わる */
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
+.match-card.win {
+    border-left-color: #55aaff; /* 勝利は青 */
+}
+
+.match-card.loss {
+    border-left-color: #e84057; /* 敗北は赤 */
+}
+
+.match-champion-icon img {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+}
+
+.match-result {
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.match-result.win {
+    color: #55aaff;
+}
+
+.match-result.loss {
+    color: #e84057;
+}
+
+.match-stats {
+    flex-grow: 1;
+}
+
+.match-kda {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #fff;
+}
+
+.match-kda .deaths {
+    color: #e84057;
+}
+
+.match-meta {
+    font-size: 0.9em;
+    color: #888;
+    margin-top: 5px;
+}
+/* ▲▲▲ 追記ここまで ▲▲▲ */
+
+
+/*
+| -------------------------------------------------------------------
+| 6. Item Pages (アイテム関連)
+| -------------------------------------------------------------------
+*/
+
+/* Item List Page */
+.item-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.item-card {
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    background-color: #111;
+}
+
+.item-card img {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 10px;
+}
+
+.item-name {
+    font-size: 0.9em;
+    font-weight: bold;
+    min-height: 40px;
+}
+
+.item-gold {
+    font-size: 0.9em;
+    color: gold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+}
+
+.item-gold img {
+    width: 15px;
+    height: 15px;
+    margin-top: 10px;
+}
+
+.item-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+/* Item Detail Page */
+.item-detail-container {
+    display: flex;
+    gap: 30px;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #0a0a0a;
+    border: 1px solid #333;
+    border-radius: 8px;
+}
+
+.item-image-section {
+    flex-basis: 300px;
+    text-align: center;
+}
+
+.item-image-section img {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 15px;
+    border: 2px solid #555;
+    border-radius: 5px;
+}
+
+.item-image-section h1 {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #fff;
+}
+
+.item-info-section {
+    flex: 1;
+}
+
+.item-info-section h2 {
+    font-size: 1.3em;
+    color: gold;
+    border-bottom: 1px solid gold;
+    padding-bottom: 5px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.item-info-section h2:first-child {
+    margin-top: 0;
+}
+
+.item-description, .item-advice {
+    line-height: 1.8;
+}
+
+.item-description stats { color: #ddd; }
+.item-description attention { color: #aaffaa; }
+.item-description passive { color: #ffcc88; }
+.item-description keyword { color: #88ccff; }
+
+.item-gold-detail {
+    color: gold;
+    font-size: 1.1em;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+}
+
+.from-items-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.from-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #111;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid #444;
+}
+
+.from-item img {
+    width: 50px;
+    height: 50px;
+}
+
+
+/*
+| -------------------------------------------------------------------
+| 7. Reusable Components (再利用コンポーネント)
+| -------------------------------------------------------------------
+*/
+
+/* Filter Forms */
+.filter-form {
+    display: flex;
+}
+
+#filter-form select {
+    margin-right: 15px;
+    padding: 5px;
+    border-radius: 5px;
+    border:1px solid #ddd;
+}
+
+.filtering-container {
+    display: flex;
+    gap: 15px; 
+    justify-content: center;
+    padding: 20px;
+}
+
+.filter-form select {
+    background-color: #9a9a9a; 
+    border: 1px solid #808080; 
+    border-radius: 5px; 
+    padding: 6px 20px 6px 15px; 
+    font-size: 16px;
+    cursor: pointer;
+    color: #000;
+    line-height: 1.2;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.filter-nav {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.filter-nav a {
+    text-decoration: none;
+    color: #aaa;
+    padding: 8px 15px;
+    border: 1px solid #555;
+    border-radius: 5px;
+    transition: all 0.3s;
+}
+
+.filter-nav a:hover {
+    background-color: #333;
+    color: #fff;
+}
+
+.filter-nav a.active {
+    background-color: gold;
+    color: #000;
+    border-color: gold;
+    font-weight: bold;
+}
+
+.completed-item-filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin: 15px 0;
+}
+
+.completed-item-filters fieldset {
+    border: 1px solid #555;
+    border-radius: 8px;
+    padding: 10px 15px;
+}
+
+.completed-item-filters legend {
+    padding: 0 10px;
+    font-weight: bold;
+    color: gold;
+}
+
+.completed-item-filters label {
+    display: inline-block;
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+.sub-filter-nav {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.sub-filter-nav a {
+    text-decoration: none;
+    color: #bbb;
+    padding: 6px 12px;
+    border-radius: 15px;
+    background-color: #333;
+    transition: all 0.3s;
+}
+
+.sub-filter-nav a:hover {
+    background-color: #555;
+    color: #fff;
+}
+
+.sub-filter-nav a.active {
+    background-color: #c89b3c;
+    color: #000;
+    font-weight: bold;
+}
+
+/* Lane Icons */
+.laneIcon {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.lane-icons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.lane-icon-link {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+}
+
+.lane-icon {
+    width: 60px;
+    height: auto;
+    border-radius: 5%;
+    border: 3px solid transparent;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.lane-icon-link:hover .lane-icon {
+    transform: scale(1.2);
+}
+
+.lane-icon-link.active .lane-icon {
+    border-color: #fff; 
+}
+
+
+/*
+| -------------------------------------------------------------------
+| 8. Modal Window (モーダルウィンドウ)
+| -------------------------------------------------------------------
+*/
 .modal {
     display: none; 
     position: fixed; 
@@ -178,7 +630,7 @@ body {
     height: 100%;
     background-color: rgba(0,0,0,0.9); 
 }
-/* モーダル内の画像 */
+
 .modal-content {
     margin: auto;
     display: block;
@@ -187,7 +639,7 @@ body {
     animation-name: zoom;
     animation-duration: 0.6s;
 }
-/* 閉じるボタン */
+
 .close {
     position: absolute;
     top: 15px;
@@ -196,14 +648,15 @@ body {
     font-size: 40px;
     font-weight: bold;
     transition: 0.3s;
+    cursor: pointer;
 }
+
 .close:hover,
 .close:focus {
     color: #bbb;
     text-decoration: none;
-    cursor: pointer;
 }
-/* キャプション（画像の説明） */
+
 #caption {
     margin: auto;
     display: block;
@@ -213,11 +666,12 @@ body {
     color: #ccc;
     padding: 10px 0;
 }
-/* モーダル表示時のアニメーション */
+
 @keyframes zoom {
     from {transform: scale(0)}
     to {transform: scale(1)}
 }
+
 .modal-content-container {
     position: relative;
     margin: auto;
@@ -226,7 +680,6 @@ body {
     padding-top: 50px;
 }
 
-/* モーダル内の画像 */
 .modal-content-container img {
     width: 100%;
     height: auto;
@@ -235,11 +688,10 @@ body {
     animation-duration: 0.6s;
 }
 
-/* 前へ/次へボタンのスタイル */
 .prev, .next {
     cursor: pointer;
     position: absolute;
-    top: 50%; /* 親要素の中央に配置 */
+    top: 50%;
     width: auto;
     padding: 16px;
     color: white;
@@ -248,50 +700,59 @@ body {
     transition: 0.6s ease;
     user-select: none;
     -webkit-user-select: none;
-    background-color: rgba(0, 0, 0, 0.5); /* 矢印の背景を追加 */
-    transform: translateY(-50%); /* 中央寄せの微調整 */
+    background-color: rgba(0, 0, 0, 0.5);
+    transform: translateY(-50%);
 }
 
-/* 前へボタンを左側に配置 */
 .prev {
     left: 0;
     border-radius: 0 3px 3px 0;
 }
 
-/* 次へボタンを右側に配置 */
 .next {
     right: 0;
     border-radius: 3px 0 0 3px;
 }
 
-/* ホバー時のスタイル */
 .prev:hover, .next:hover {
     background-color: rgba(0, 0, 0, 0.8);
 }
 
+/* public/css/style.css に追記 */
+.search-page-container { max-width: 800px; margin: 0 auto; }
+.search-container span { margin: 0 5px; }
+.success { color: #4caf50; font-weight: bold; margin-bottom: 15px; }
 
-
-.filtering-container {
+.history-container { margin-top: 30px; }
+.history-list { list-style: none; padding: 0; }
+.history-list li {
     display: flex;
-    gap: 15px; 
-    justify-content: center;
-    padding: 20px;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #111;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #444;
 }
-
-
-.filter-form select {
-    background-color: #9a9a9a; 
-    border: 1px solid #808080; 
-    border-radius: 5px; 
-    padding: 6px 20px 6px 15px; 
-    font-size: 16px;
+.history-link {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+.history-link:hover { color: gold; }
+.history-tag { color: #888; margin-left: 8px; }
+.delete-button {
+    background: none;
+    border: 1px solid #e84057;
+    color: #e84057;
+    padding: 5px 10px;
+    border-radius: 5px;
     cursor: pointer;
-    color: #000;
-    line-height: 1.2;
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>'); /* 矢印のSVGアイコン */
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 12px;
-    transition: background-color 0.2s, border-color 0.2s;
+    transition: background-color 0.3s, color 0.3s;
 }
-
+.delete-button:hover {
+    background-color: #e84057;
+    color: #fff;
+}

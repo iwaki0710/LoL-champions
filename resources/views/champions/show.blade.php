@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">  
 </head>
 <body>
+    <x-header />
     <div class="detail-champ">
         <div class="champ-title">
             <h1>{{ $champion->name }} - {{ $champion->title }}</h1>
