@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('description'); // アイテムの効果 (HTML形式)
             $table->text('plaintext');   // アイテムの簡単な説明
             $table->integer('total_gold');
-            $table->json('tags');        // アイテムのカテゴリタグ (例: "Boots", "Damage")
+            $table->json('tags');        // アイテムのカテゴリタグ 
             $table->timestamps();
         });
     }

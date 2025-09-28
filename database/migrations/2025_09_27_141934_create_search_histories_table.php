@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('gameName');
             $table->string('tagLine');
-            $table->string('puuid'); // 対戦履歴ページへのリンクに必須
+            $table->string('puuid');
             $table->timestamps(); // created_atで検索順を管理
         });
     }

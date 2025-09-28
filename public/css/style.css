@@ -207,6 +207,7 @@ nav a:hover {
 | 5. Account Pages (アカウント関連)
 | -------------------------------------------------------------------
 */
+/* Search Page */
 .search-container {
     text-align: center;
     margin-top: 50px;
@@ -238,15 +239,7 @@ nav a:hover {
     margin-bottom: 15px;
 }
 
-.summoner-details {
-    margin-top: 20px;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-}
-
-/* ▼▼▼ 対戦履歴用のスタイルを追記 ▼▼▼ */
+/* History Page */
 .match-history-container {
     max-width: 800px;
     margin: 20px auto;
@@ -255,61 +248,148 @@ nav a:hover {
 .match-card {
     display: flex;
     align-items: center;
-    gap: 20px;
-    background-color: #111;
-    border-left: 5px solid; /* 勝利/敗北で色が変わる */
+    background-color: #09101a;
+    border: 1px solid #2c3e50;
+    border-left: 5px solid; /* For win/loss color */
     padding: 15px;
     margin-bottom: 15px;
     border-radius: 5px;
 }
 
-.match-card.win {
-    border-left-color: #55aaff; /* 勝利は青 */
-}
+.match-card.win { border-left-color: #55aaff; }
+.match-card.loss { border-left-color: #e84057; }
 
-.match-card.loss {
-    border-left-color: #e84057; /* 敗北は赤 */
+.match-info {
+    flex-basis: 120px;
+    text-align: center;
+    border-right: 1px solid #2c3e50;
+    padding-right: 20px;
 }
+.match-game-mode { font-size: 0.9em; font-weight: bold; }
+.match-result { font-weight: bold; font-size: 1.2em; margin: 5px 0; }
+.match-result.win { color: #55aaff; }
+.match-result.loss { color: #e84057; }
+.match-duration { font-size: 0.8em; color: #888; }
 
+.match-player-details {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0 20px;
+}
+.details-top {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 10px;
+}
 .match-champion-icon img {
     width: 64px;
     height: 64px;
     border-radius: 50%;
 }
+.match-kda { font-size: 1.2em; font-weight: bold; color: #fff; }
+.match-kda .deaths { color: #e84057; }
 
-.match-result {
+.details-bottom {
+    margin-top: 10px;
+}
+.match-items {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+.match-item-icon img {
+    width: 32px;
+    height: 32px;
+    border-radius: 5px;
+    background-color: #010a13;
+}
+.empty-item-slot {
+    width: 32px;
+    height: 32px;
+    border-radius: 5px;
+    background-color: #010a13;
+    border: 1px solid #2c3e50;
+}
+
+.match-opponent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    border-left: 1px solid #2c3e50;
+    padding-left: 20px;
+    min-width: 60px;
+}
+.match-opponent span {
+    font-size: 0.8em;
+    color: #888;
+}
+.match-opponent .opponent-icon img {
+    width: 48px;
+    height: 48px;
+}
+
+/* おすすめレーンアイコン (詳細ページ用) */
+.lane-icon-small {
+    width: 130px;
+    height: 130px;
+}
+
+/* 難易度とステータスを囲むコンテナ */
+.champ-meta-container {
+    display: flex;
+    gap: 30px;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #444;
+}
+
+/* コンテナ内の左側・右側セクション */
+.meta-left, .meta-right {
+    flex: 1;
+}
+
+/* 「難易度」「初期ステータス」などのラベル */
+.meta-label {
     font-weight: bold;
-    font-size: 1.2em;
-}
-
-.match-result.win {
-    color: #55aaff;
-}
-
-.match-result.loss {
-    color: #e84057;
-}
-
-.match-stats {
-    flex-grow: 1;
-}
-
-.match-kda {
+    color: gold;
+    margin-bottom: 10px;
     font-size: 1.1em;
+}
+
+/* 初期ステータス表 */
+.stats-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111;
+}
+
+.stats-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid #222;
+    font-size: 0.9em;
+}
+
+.stats-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* 表の左側 (ステータス名) */
+.stats-table td:first-child {
+    font-weight: bold;
+    color: #aaa;
+}
+
+/* 表の右側 (数値) */
+.stats-table td:last-child {
+    text-align: right;
     font-weight: bold;
     color: #fff;
 }
 
-.match-kda .deaths {
-    color: #e84057;
-}
 
-.match-meta {
-    font-size: 0.9em;
-    color: #888;
-    margin-top: 5px;
-}
-/* ▲▲▲ 追記ここまで ▲▲▲ */
 
 
 /*
@@ -578,11 +658,6 @@ nav a:hover {
 }
 
 /* Lane Icons */
-.laneIcon {
-    text-align: center;
-    margin: 20px 0;
-}
-
 .lane-icons {
     display: flex;
     justify-content: center;
@@ -718,7 +793,6 @@ nav a:hover {
     background-color: rgba(0, 0, 0, 0.8);
 }
 
-/* public/css/style.css に追記 */
 .search-page-container { max-width: 800px; margin: 0 auto; }
 .search-container span { margin: 0 5px; }
 .success { color: #4caf50; font-weight: bold; margin-bottom: 15px; }

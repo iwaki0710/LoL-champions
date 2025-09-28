@@ -16,55 +16,67 @@
             <p class="error">{{ session('errors')->first('historyError') }}</p>
         @endif
 
-        @if (empty($matches))
+        @if (empty($processedMatches))
             <p>最近の対戦履歴がありません。</p>
         @else
-            {{-- 
-                チャンピオン画像を表示するには、AccountControllerのhistoryメソッドで
-                APIバージョン($version)を取得し、このビューに渡す必要があります。
-                例: $version = Http::get("...versions.json")->json()[0];
-                    return view('account.history', compact(..., 'version'));
-            --}}
-            @foreach ($matches as $match)
-                {{-- 自分のプレイヤー情報を試合データから検索 --}}
-                @php
-                    $playerData = null;
-                    foreach ($match['info']['participants'] as $participant) {
-                        if ($participant['puuid'] === $puuid) {
-                            $playerData = $participant;
-                            break;
-                        }
-                    }
-                @endphp
-
-                {{-- プレイヤー情報が見つかった場合のみ表示 --}}
-                @if ($playerData)
-                    <div class="match-card {{ $playerData['win'] ? 'win' : 'loss' }}">
-                        
-                        {{-- チャンピオンアイコン --}}
-                        <div class="match-champion-icon">
-                            @isset($version)
-                                <img src="https://ddragon.leagueoflegends.com/cdn/{{ $version }}/img/champion/{{ $playerData['championName'] }}.png" alt="{{ $playerData['championName'] }}">
-                            @endisset
-                        </div>
-
-                        {{-- 試合結果とKDA --}}
-                        <div class="match-stats">
-                            <p class="match-result {{ $playerData['win'] ? 'win' : 'loss' }}">
-                                {{ $playerData['win'] ? '勝利' : '敗北' }}
-                            </p>
-                            <p class="match-kda">
-                                {{ $playerData['kills'] }} / <span class="deaths">{{ $playerData['deaths'] }}</span> / {{ $playerData['assists'] }}
-                            </p>
-                            <p class="match-meta">
-                                試合時間: {{ round($match['info']['gameDuration'] / 60) }} 分
-                            </p>
-                        </div>
-
+            @foreach ($processedMatches as $match)
+                <div class="match-card {{ $match['win'] ? 'win' : 'loss' }}">
+                    
+                    {{-- 左側：ゲームモードと結果 --}}
+                    <div class="match-info">
+                        <p class="match-game-mode">{{ $match['gameMode'] }}</p>
+                        <p class="match-result {{ $match['win'] ? 'win' : 'loss' }}">
+                            {{ $match['win'] ? '勝利' : '敗北' }}
+                        </p>
+                        <p class="match-duration">
+                            {{ round($match['gameDuration'] / 60) }} 分
+                        </p>
                     </div>
-                @endif
+
+                    {{-- 中央：プレイヤーの詳細情報 --}}
+                    <div class="match-player-details">
+                        <div class="details-top">
+                             {{-- チャンピオンアイコン --}}
+                            <div class="match-champion-icon">
+                                <img src="https://ddragon.leagueoflegends.com/cdn/{{ $version }}/img/champion/{{ $match['championName'] }}.png" alt="{{ $match['championName'] }}">
+                            </div>
+                            {{-- KDA --}}
+                            <div class="match-kda-section">
+                                <p class="match-kda">
+                                    {{ $match['kills'] }} / <span class="deaths">{{ $match['deaths'] }}</span> / {{ $match['assists'] }}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="details-bottom">
+                             {{-- 使用アイテム --}}
+                             <div class="match-items">
+                                @foreach ($match['items'] as $itemId)
+                                    <div class="match-item-icon">
+                                        @if($itemId !== 0)
+                                            <img src="https://ddragon.leagueoflegends.com/cdn/{{ $version }}/img/item/{{ $itemId }}.png" alt="item-icon">
+                                        @else
+                                            <div class="empty-item-slot"></div>
+                                        @endif
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- 右側：対面プレイヤー --}}
+                    @if ($match['opponentChampionName'])
+                        <div class="match-opponent">
+                            <span>vs</span>
+                            <div class="match-champion-icon opponent-icon">
+                                <img src="https://ddragon.leagueoflegends.com/cdn/{{ $version }}/img/champion/{{ $match['opponentChampionName'] }}.png" alt="{{ $match['opponentChampionName'] }}">
+                            </div>
+                        </div>
+                    @endif
+
+                </div>
             @endforeach
         @endif
     </div>
 </body>
 </html>
+
