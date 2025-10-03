@@ -10,24 +10,18 @@ use App\Models\SearchHistory;
 
 class AccountController extends Controller
 {
-<<<<<<< HEAD
     /**
      * アカウント検索ページを表示
      */
-=======
->>>>>>> 5d2cd9fc7d0da43017baeb152cf720b906665019
     public function search()
     {
         $histories = SearchHistory::latest()->get();
         return view('account.search', compact('histories'));
     }
 
-<<<<<<< HEAD
     /**
      * アカウントを検索し、PUUIDを取得して対戦履歴ページにリダイレクト
      */
-=======
->>>>>>> 5d2cd9fc7d0da43017baeb152cf720b906665019
     public function show(Request $request)
     {
         $gameName = $request->input('gameName');
@@ -35,14 +29,9 @@ class AccountController extends Controller
         $apiKey = env('RIOT_API_KEY');
         $tagLine = ltrim($tagLine, '#');
 
-<<<<<<< HEAD
         $apiUrl = "https://asia.api.riotgames.com/riot/account/v1/accounts/by-riot-id/{$gameName}/{$tagLine}";
 
         $response = Http::withHeaders(['X-Riot-Token' => $apiKey])->get($apiUrl);
-=======
-        $response = Http::withHeaders(['X-Riot-Token' => $apiKey])
-            ->get("https://asia.api.riotgames.com/riot/account/v1/accounts/by-riot-id/{$gameName}/{$tagLine}");
->>>>>>> 5d2cd9fc7d0da43017baeb152cf720b906665019
 
         if ($response->successful()) {
             $puuid = $response->json()['puuid'];
@@ -52,10 +41,7 @@ class AccountController extends Controller
                 'tagLine' => $tagLine,
                 'puuid' => $puuid,
             ]);
-<<<<<<< HEAD
-            // platformを渡さないシンプルなルートに戻す
-=======
->>>>>>> 5d2cd9fc7d0da43017baeb152cf720b906665019
+            
             return redirect()->route('account.history', ['puuid' => $puuid]);
         } else {
             $statusCode = $response->status();
@@ -73,12 +59,9 @@ class AccountController extends Controller
         }
     }
 
-<<<<<<< HEAD
     /**
      * 検索履歴を削除
      */
-=======
->>>>>>> 5d2cd9fc7d0da43017baeb152cf720b906665019
     public function destroy(SearchHistory $history)
     {
         $history->delete();
@@ -86,13 +69,12 @@ class AccountController extends Controller
     }
 
     /**
-     * 対戦履歴の詳細情報を表示する
+     * 対戦履歴の初期表示を行う
      */
     public function history($puuid, $start = 0)
     {
         $apiKey = env('RIOT_API_KEY');
         
-<<<<<<< HEAD
         $summonerSpells = SummonerSpell::all()->keyBy('key');
         $runes = Rune::all()->keyBy('id');
 
@@ -101,26 +83,13 @@ class AccountController extends Controller
 
         $matchIdResponse = Http::withHeaders(['X-Riot-Token' => $apiKey])
             ->get("https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/{$puuid}/ids?start={$start}&count=10");
-=======
-        // Data Dragonの最新バージョンを取得 (画像URLのため)
-        $versionsResponse = Http::get("https://ddragon.leagueoflegends.com/api/versions.json");
-        $version = $versionsResponse->json()[0];
-
-        // 試合IDのリストを取得
-        $matchIdResponse = Http::withHeaders(['X-Riot-Token' => $apiKey])
-            ->get("https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/{$puuid}/ids?start=0&count=10");
->>>>>>> 5d2cd9fc7d0da43017baeb152cf720b906665019
 
         if (!$matchIdResponse->successful()) {
             return back()->withErrors(['searchError' => '試合履歴の取得に失敗しました。']);
         }
 
         $matchIds = $matchIdResponse->json();
-<<<<<<< HEAD
         $processedMatches = [];
-=======
-        $processedMatches = []; // ビューに渡すための整形済み試合データ配列
->>>>>>> 5d2cd9fc7d0da43017baeb152cf720b906665019
 
         foreach ($matchIds as $matchId) {
             $matchResponse = Http::withHeaders(['X-Riot-Token' => $apiKey])
@@ -130,10 +99,6 @@ class AccountController extends Controller
                 $matchData = $matchResponse->json();
                 $playerData = null;
 
-<<<<<<< HEAD
-=======
-                // 自分のプレイヤーデータを検索
->>>>>>> 5d2cd9fc7d0da43017baeb152cf720b906665019
                 foreach ($matchData['info']['participants'] as $participant) {
                     if ($participant['puuid'] === $puuid) {
                         $playerData = $participant;
@@ -142,7 +107,6 @@ class AccountController extends Controller
                 }
 
                 if ($playerData) {
-<<<<<<< HEAD
                     $deaths = $playerData['deaths'] == 0 ? 1 : $playerData['deaths'];
                     $kda = round(($playerData['kills'] + $playerData['assists']) / $deaths, 2);
 
@@ -159,22 +123,12 @@ class AccountController extends Controller
                     
                     $opponentData = null;
                     foreach ($matchData['info']['participants'] as $participant) {
-=======
-                    // 対面のプレイヤーを検索
-                    $opponentData = null;
-                    foreach ($matchData['info']['participants'] as $participant) {
-                        // チームが異なり、かつレーンポジションが同じプレイヤーを探す
->>>>>>> 5d2cd9fc7d0da43017baeb152cf720b906665019
                         if ($participant['teamId'] !== $playerData['teamId'] && $participant['individualPosition'] === $playerData['individualPosition']) {
                             $opponentData = $participant;
                             break;
                         }
                     }
 
-<<<<<<< HEAD
-=======
-                    // プレイヤーが使用したアイテムのIDリストを作成 (0は空スロットなので除外)
->>>>>>> 5d2cd9fc7d0da43017baeb152cf720b906665019
                     $items = [];
                     for ($i = 0; $i < 7; $i++) {
                         if ($playerData['item' . $i] !== 0) {
@@ -182,10 +136,6 @@ class AccountController extends Controller
                         }
                     }
                     
-<<<<<<< HEAD
-=======
-                    // 試合データをビューで使いやすい形に整理
->>>>>>> 5d2cd9fc7d0da43017baeb152cf720b906665019
                     $processedMatches[] = [
                         'win' => $playerData['win'],
                         'championName' => $playerData['championName'],
@@ -195,7 +145,6 @@ class AccountController extends Controller
                         'items' => $items,
                         'gameMode' => $this->getQueueName($matchData['info']['queueId']),
                         'gameDuration' => $matchData['info']['gameDuration'],
-<<<<<<< HEAD
                         'opponentChampionName' => $opponentData['championName'] ?? null,
                         'spell1' => $spell1,
                         'spell2' => $spell2,
@@ -204,15 +153,11 @@ class AccountController extends Controller
                         'kda' => $kda,
                         'totalCS' => $totalCS,
                         'csPerMinute' => $csPerMinute,
-=======
-                        'opponentChampionName' => $opponentData['championName'] ?? null, 
->>>>>>> 5d2cd9fc7d0da43017baeb152cf720b906665019
                     ];
                 }
             }
         }
         
-<<<<<<< HEAD
         $nextStart = $start + 10;
         
         return view('account.history', compact('processedMatches', 'puuid', 'version', 'nextStart'));
@@ -308,25 +253,6 @@ class AccountController extends Controller
             'matches' => $processedMatches,
             'version' => $version,
         ]);
-    }
-
-    /**
-     * Queue IDから日本語のゲームモード名を取得するヘルパー関数
-     */
-    private function getQueueName(int $queueId): string
-    {
-        return match ($queueId) {
-            400 => 'ノーマル (ドラフト)',
-            420 => 'ランク (ソロ/デュオ)',
-            430 => 'ノーマル (ブラインド)',
-            440 => 'ランク (フレックス)',
-            450 => 'ARAM',
-            700 => 'Clash',
-            default => '特殊モード',
-        };
-=======
-        return view('account.history', compact('processedMatches', 'puuid', 'version'));
->>>>>>> 5d2cd9fc7d0da43017baeb152cf720b906665019
     }
 
     /**
