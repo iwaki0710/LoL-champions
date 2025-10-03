@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             ChampionSeeder::class,
             LaneSeeder::class,
             ItemSeeder::class,
+            RuneSeeder::class,
         ]);
     }
 }

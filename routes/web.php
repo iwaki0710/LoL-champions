@@ -2,8 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChampionController;
-use App\http\COntrollers\AccountController;
+use App\Http\Controllers\AccountController; 
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\RuneController;
+use App\Http\Controllers\SummonerSpellController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,7 +46,12 @@ Route::get('/account', [AccountController::class, 'search'])->name('account.sear
 Route::post('/account/show', [AccountController::class, 'show'])->name('account.show');
 
 // 対戦履歴詳細ページ（PuuidをURLパラメーターとして受け取る）
-Route::get('/account/history/{puuid}', [AccountController::class, 'history'])->name('account.history');
+Route::get('/account/history/{puuid}/{start?}', [AccountController::class, 'history'])
+    ->where('start', '[0-9]+') // startが数字であることを保証
+    ->name('account.history');
+
+// ▼▼▼【追記】対戦履歴をJSONデータとして取得するためのAPIルート ▼▼▼
+Route::get('/api/matches/{puuid}/{start?}', [AccountController::class, 'fetchMatches'])->name('api.matches');
 
 Route::get('/items', function () {
     return view('items');
@@ -57,3 +64,11 @@ Route::get('/items/{item}', [ItemController::class, 'show'])->name('items.show')
 
 // 検索履歴を削除するためのルート
 Route::delete('/account/history/{history}', [AccountController::class, 'destroy'])->name('account.history.destroy');
+
+// --- ルーンページ ---
+Route::get('/runes', [RuneController::class, 'index'])->name('runes.index');
+Route::get('/runes/{pathId}', [RuneController::class, 'show'])->name('runes.show');
+
+// --- サモナースペル ---
+Route::get('/spells', [SummonerSpellController::class, 'index'])->name('spells.index');
+Route::get('/spells/{spell}', [SummonerSpellController::class, 'show'])->name('spells.show');

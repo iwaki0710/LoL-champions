@@ -38,6 +38,7 @@
                 <ul class="history-list">
                     @foreach ($histories as $history)
                         <li>
+                            {{-- aタグのhrefからplatformの記述を削除 --}}
                             <a href="{{ route('account.history', ['puuid' => $history->puuid]) }}" class="history-link">
                                 <span class="history-name">{{ $history->gameName }}</span>
                                 <span class="history-tag">#{{ $history->tagLine }}</span>

@@ -12,33 +12,71 @@
         <div class="champ-title">
             <h1>{{ $champion->name }} - {{ $champion->title }}</h1>
             <p>{{ $champion->blurb }}</p>
-            {{-- 難易度（データベースから取得） --}}
-            <p class="champion-difficulty">難易度: 
-                @php
-                    $difficulty = $champion->difficulty;
-                    if ($difficulty >= 0 && $difficulty <= 3) {
-                        $stars = 1;
-                    } elseif ($difficulty >= 4 && $difficulty <= 7) {
-                        $stars = 2;
-                    } else {
-                        $stars = 3;
-                    }
-                @endphp
-                @for ($i = 0; $i < $stars; $i++)
-                    <span class="star">★</span>
-                @endfor
-            </p>
-            <p>おすすめレーン</p>
-                @if ($champion->lane)
-                    <div class="recommended-lane-icon">
+            <div class="champ-meta-container">
+                {{-- 左側：難易度とおすすめレーン --}}
+                <div class="meta-left">
+                    <p class="meta-label">難易度</p>
+                    <p class="champion-difficulty"> 
                         @php
-                            $laneIconName = ($champion->lane === 'Bottom') ? 'bottom' : strtolower($champion->lane);
+                            $difficulty = $champion->difficulty;
+                            $stars = ($difficulty <= 3) ? 1 : (($difficulty <= 7) ? 2 : 3);
                         @endphp
-                        <img src="{{ asset('img/lanes/' . $laneIconName . '.png') }}" alt="{{ $champion->lane }}レーン" class="lane-icon-small">
-                    </div>
-                @else
-                    <p>推奨レーン情報がありません。</p>
-                @endif
+                        @for ($i = 0; $i < $stars; $i++)
+                            <span class="star">★</span>
+                        @endfor
+                    </p>
+                    <p class="meta-label">おすすめレーン</p>
+                    @if ($champion->lane)
+                        <div class="recommended-lane-icon">
+                            @php
+                                $laneIconName = strtolower($champion->lane);
+                            @endphp
+                            <img src="{{ asset('img/lanes/' . $laneIconName . '.png') }}" alt="{{ $champion->lane }}レーン" class="lane-icon-small">
+                        </div>
+                    @else
+                        <p>情報なし</p>
+                    @endif
+                </div>
+
+                {{-- 右側：初期ステータス表 --}}
+                <div class="meta-right">
+                        <p class="meta-label">初期ステータス (Lv.1)</p>
+                        @if (isset($championApiData['stats']))
+                            <table class="stats-table">
+                            <tbody>
+                                <tr>
+                                    <td>体力</td>
+                                    <td>{{ $championApiData['stats']['hp'] }}</td>
+                                </tr>
+                                <tr>
+                                    {{-- マナ、気、フューリーなどチャンピオン固有のリソース名を表示 --}}
+                                    <td>{{ $championApiData['partype'] }}</td>
+                                    <td>{{ $championApiData['stats']['mp'] }}</td>
+                                </tr>
+                                <tr>
+                                    <td>攻撃力</td>
+                                    <td>{{ $championApiData['stats']['attackdamage'] }}</td>
+                                </tr>
+                                <tr>
+                                    <td>物理防御</td>
+                                    <td>{{ $championApiData['stats']['armor'] }}</td>
+                                </tr>
+                                <tr>
+                                    <td>魔法防御</td>
+                                    <td>{{ $championApiData['stats']['spellblock'] }}</td>
+                                </tr>
+                                <tr>
+                                    <td>移動速度</td>
+                                    <td>{{ $championApiData['stats']['movespeed'] }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    @endif
+                </div>
+            </div>
+
+
+
         </div>
         {{-- スプラッシュアートとスキンの表示 --}}
         @if (isset($championApiData['skins']))

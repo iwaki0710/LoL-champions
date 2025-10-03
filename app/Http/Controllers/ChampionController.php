@@ -97,7 +97,7 @@ class ChampionController extends Controller
             $champion->spells = $championApiData['spells'];
             $champion->image = $championApiData['image'];
 
-            // ここにAPIから取得したスキン情報を追加
+            // APIから取得したスキン情報を追加
             $champion->skins = $championApiData['skins'];
 
             return view('champions.show', compact('champion', 'version', 'championApiData'));
